@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<entity-engine-xml>
+    <SecurityPermission description="View operations in the Vffacility Component." permissionId="VFFACILITY_VIEW"/>
+    <SecurityPermission description="Create operations in the Vffacility Component." permissionId="VFFACILITY_CREATE"/>
+    <SecurityPermission description="Update operations in the Vffacility Component." permissionId="VFFACILITY_UPDATE"/>
+    <SecurityPermission description="Delete operations in the Vffacility Component." permissionId="VFFACILITY_DELETE"/>
+    <SecurityPermission description="ALL operations in the Vffacility Component." permissionId="VFFACILITY_ADMIN"/>
+
+    <SecurityGroupPermission groupId="SUPER" permissionId="VFFACILITY_ADMIN"/>
+
+</entity-engine-xml>
