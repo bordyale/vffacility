@@ -15,5 +15,78 @@
             </widgets>
         </section>
     </screen>
+    
+    
+        <screen name="EditFacility">
+        <section>
+            <actions>
+                <set field="titleProperty" value="ProductNewFacility"/>
+                <set field="headerItem" value="facility"/>
+                <set field="tabButtonItem" value="EditFacility"/>
+                <script location="component://product/groovyScripts/facility/facility/EditFacility.groovy"/>
+            </actions>
+            <widgets>
+                <section>
+                    <condition>
+                        <not><if-empty field="facility"/></not>
+                    </condition>
+                    <actions>
+                        <set field="titleProperty" value="ProductEditFacility"/>
+                    </actions>
+                    <widgets>
+                        <decorator-screen name="VffacilityCommonDecorator" location="${parameters.mainDecoratorLocation}">
+                            <decorator-section name="body">
+                                <section>
+                                    <condition>
+                                        <if-service-permission service-name="facilityGenericPermission" main-action="VIEW"/>
+                                    </condition>
+                                    <widgets>
+                                        <section>
+                                            <condition>
+                                                <not><if-empty field="facilityId"/></not>
+                                            </condition>
+                                            <widgets>
+                                                <container style="page-title">
+                                                    <label>${uiLabelMap.ProductEditFacility} ${facility.facilityName} [${facilityId}]</label>
+                                                </container>
+                                                <container style="button-bar button-style-1">
+                                                    <link target="/workeffort/control/calendar" text="${uiLabelMap.CommonViewCalendar}" url-mode="inter-app">
+                                                        <parameter param-name="facilityId"/>
+                                                        <parameter param-name="externalLoginKey" from-field="parameters.externalLoginKey"/>
+                                                    </link>
+                                                </container>
+                                                <platform-specific><html><html-template location="component://product/template/facility/EditFacility.ftl"/></html></platform-specific>
+                                            </widgets>
+                                        </section>
+                                    </widgets>
+                                    <fail-widgets>
+                                        <label style="h3">${uiLabelMap.ProductFacilityViewPermissionError}</label>
+                                    </fail-widgets>
+                                </section>
+                            </decorator-section>
+                        </decorator-screen>
+                    </widgets>
+                    <fail-widgets>
+                        <decorator-screen name="main-decorator" location="${parameters.mainDecoratorLocation}">
+                            <decorator-section name="body">
+                                <section>
+                                    <condition>
+                                        <if-service-permission service-name="facilityGenericPermission" main-action="VIEW"/>
+                                    </condition>
+                                    <widgets>
+                                        <label style="h1">${uiLabelMap.ProductNewFacility}</label>
+                                        <platform-specific><html><html-template location="component://product/template/facility/EditFacility.ftl"/></html></platform-specific>
+                                    </widgets>
+                                    <fail-widgets>
+                                        <label style="h3">${uiLabelMap.ProductFacilityViewPermissionError}</label>
+                                    </fail-widgets>
+                                </section>
+                            </decorator-section>
+                        </decorator-screen>
+                    </fail-widgets>
+                </section>
+            </widgets>
+        </section>
+    </screen>
 
 </screens>
