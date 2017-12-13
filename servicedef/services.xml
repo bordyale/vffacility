@@ -11,4 +11,12 @@
         </description>
     </service> 
     
+    
+    
+    <!-- Permission Services -->
+    <service name="vffacilityGenericPermission" engine="simple"
+             location="component://vffacility/minilang/VffacilityPermissionServices.xml" invoke="vffacilityGenericPermission">
+        <implements service="permissionInterface"/>
+    </service>
+    
 </services>

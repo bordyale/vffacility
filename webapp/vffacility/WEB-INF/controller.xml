@@ -31,6 +31,10 @@
         <security https="true" auth="true"/>
         <response name="success" type="view" value="EditFacility"/>
     </request-map>
+    <request-map uri="EditFacilityInventoryItems">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="EditFacilityInventoryItems"/>
+    </request-map>
     
     
     
@@ -38,6 +42,7 @@
     
     <!-- View Mappings -->
     <view-map name="main" type="screen" page="component://vffacility/widget/VffacilityScreens.xml#main"/>
-    <view-map name="FindFacility" type="screen" page="component://product/widget/facility/FacilityScreens.xml#FindFacility"/>
+    <view-map name="FindFacility" type="screen" page="component://vffacility/widget/VffacilityScreens.xml#FindFacility"/>
     <view-map name="EditFacility" type="screen" page="component://vffacility/widget/VffacilityScreens.xml#EditFacility"/>
+    <view-map name="EditFacilityInventoryItems" type="screen" page="component://vffacility/widget/VffacilityScreens.xml#EditFacilityInventoryItems"/>
 </site-conf>

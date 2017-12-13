@@ -17,7 +17,8 @@
                 <set field="applicationTitle" value="${uiLabelMap.VffacilityApplication}" global="true"/>
             </actions>
             <widgets>
-                <include-screen name="GlobalDecorator" location="component://common/widget/CommonScreens.xml"/>
+            <include-screen name="ApplicationDecorator" location="component://commonext/widget/CommonScreens.xml"/>
+                <!-- <include-screen name="GlobalDecorator" location="component://common/widget/CommonScreens.xml"/> -->
             </widgets>
         </section>
     </screen>
@@ -60,6 +61,11 @@
                         </section>
                     </decorator-section>
                     <decorator-section name="body">
+                    	<section>
+                            <widgets>
+                                <container style="button-bar"><link target="EditFacility" text="${uiLabelMap.ProductCreateNewFacility}" style="buttontext"/></container>
+                            </widgets>
+                        </section>
                         <section>
                             <condition>
                                 <if-has-permission permission="VFFACILITY" action="_VIEW"/>
