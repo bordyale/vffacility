@@ -1,48 +1,178 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site-conf xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://ofbiz.apache.org/Site-Conf" xsi:schemaLocation="http://ofbiz.apache.org/Site-Conf http://ofbiz.apache.org/dtds/site-conf.xsd">
-    <!-- The controller elements that are common to all OFBiz components
-         can be found in the following xml file. A component can override the
-         elements found in the common-controller.xml file. -->
-    <include location="component://common/webcommon/WEB-INF/common-controller.xml"/>
+	xmlns="http://ofbiz.apache.org/Site-Conf"
+	xsi:schemaLocation="http://ofbiz.apache.org/Site-Conf http://ofbiz.apache.org/dtds/site-conf.xsd">
+	<!-- The controller elements that are common to all OFBiz components can 
+		be found in the following xml file. A component can override the elements 
+		found in the common-controller.xml file. -->
+	<include location="component://common/webcommon/WEB-INF/common-controller.xml" />
 
-    <description>Vffacility Component Site Configuration File</description>
+	<description>Vffacility Component Site Configuration File</description>
 
-    <!-- Events to run on every request before security (chains exempt) -->
-    <!--
-    <preprocessor>
-    </preprocessor>
-    -->
-    <!-- Events to run on every request after all other processing (chains exempt) -->
-    <!--
-    <postprocessor>
-        <event name="test" type="java" path="org.apache.ofbiz.webapp.event.TestEvent" invoke="test"/>
-    </postprocessor>
-    -->
+	<!-- Events to run on every request before security (chains exempt) -->
+	<!-- <preprocessor> </preprocessor> -->
+	<!-- Events to run on every request after all other processing (chains exempt) -->
+	<!-- <postprocessor> <event name="test" type="java" path="org.apache.ofbiz.webapp.event.TestEvent" 
+		invoke="test"/> </postprocessor> -->
 
-    <!-- Request Mappings -->
-    <request-map uri="main"><security https="true" auth="true"/><response name="success" type="view" value="main"/></request-map>
-    <!-- ================ Facility Requests ================= -->
-    <request-map uri="FindFacility">
-        <security https="true" auth="true"/>
-        <response name="success" type="view" value="FindFacility"/>
-    </request-map>
-    <request-map uri="EditFacility">
-        <security https="true" auth="true"/>
-        <response name="success" type="view" value="EditFacility"/>
-    </request-map>
-    <request-map uri="EditFacilityInventoryItems">
-        <security https="true" auth="true"/>
-        <response name="success" type="view" value="EditFacilityInventoryItems"/>
-    </request-map>
-    
-    
-    
-    
-    
-    <!-- View Mappings -->
-    <view-map name="main" type="screen" page="component://vffacility/widget/VffacilityScreens.xml#main"/>
-    <view-map name="FindFacility" type="screen" page="component://vffacility/widget/VffacilityScreens.xml#FindFacility"/>
-    <view-map name="EditFacility" type="screen" page="component://vffacility/widget/VffacilityScreens.xml#EditFacility"/>
-    <view-map name="EditFacilityInventoryItems" type="screen" page="component://vffacility/widget/VffacilityScreens.xml#EditFacilityInventoryItems"/>
+	<!-- Request Mappings -->
+	<request-map uri="main">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="main" />
+	</request-map>
+	<!-- ================ Facility Requests ================= -->
+	<request-map uri="FindFacility">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="FindFacility" />
+	</request-map>
+	<request-map uri="EditFacility">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="EditFacility" />
+	</request-map>
+	<request-map uri="EditFacilityInventoryItems">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="EditFacilityInventoryItems" />
+	</request-map>
+	<request-map uri="ViewFacilityInventoryByProduct">
+		<security https="true" auth="true" />
+		<response name="success" type="view"
+			value="ViewFacilityInventoryByProduct" />
+	</request-map>
+	<request-map uri="ViewFacilityInventoryItemsDetails">
+		<security https="true" auth="true" />
+		<response name="success" type="view"
+			value="ViewFacilityInventoryItemsDetails" />
+	</request-map>
+
+	<!-- ================ Inventory Receive Requests ================= -->
+	<request-map uri="ReceiveInventory">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="ReceiveInventory" />
+	</request-map>
+	<request-map uri="receiveInventoryProduct">
+		<security https="true" auth="true" />
+		<event type="service-multi" path="" invoke="receiveInventoryProduct" />
+		<response name="success" type="request" value="checkForceShipmentReceived" />
+		<response name="error" type="view" value="ReceiveInventory" />
+	</request-map>
+	<request-map uri="checkForceShipmentReceived">
+		<security https="true" auth="true" />
+		<event type="java" path="org.apache.ofbiz.shipment.shipment.ShipmentEvents"
+			invoke="checkForceShipmentReceived" />
+		<response name="success" type="view" value="ReceiveInventory" />
+		<response name="error" type="view" value="ReceiveInventory" />
+	</request-map>
+	<request-map uri="receiveSingleInventoryProduct">
+		<security https="true" auth="true" />
+		<event type="service" path="" invoke="receiveInventoryProduct" />
+		<response name="success" type="request" value="EditInventoryItem" />
+		<response name="error" type="view" value="ReceiveInventory" />
+	</request-map>
+	<request-map uri="ReceiveReturn">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="ReceiveReturn" />
+	</request-map>
+	<request-map uri="receiveReturnedProduct">
+		<security https="true" auth="true" />
+		<event type="service-multi" path="" invoke="receiveInventoryProduct" />
+		<response name="success" type="view" value="ReceiveReturn" />
+		<response name="error" type="view" value="ReceiveReturn" />
+	</request-map>
+	<request-map uri="UpdatedInventoryItemStatus">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="UpdatedInventoryItemStatus" />
+	</request-map>
+
+	<request-map uri="FindFacilityTransfers">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="FindFacilityTransfers" />
+	</request-map>
+	<!-- ================ Inventory Transfer Requests ================= -->
+	<request-map uri="TransferInventoryItem">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="TransferInventoryItem" />
+	</request-map>
+	<request-map uri="createInventoryTransfersForProduct">
+		<security https="true" auth="true" />
+		<event type="service" path="" invoke="createInventoryTransfersForProduct" />
+		<response name="success" type="view" value="FindFacilityTransfers" />
+		<response name="error" type="view" value="FindFacilityTransfers" />
+	</request-map>
+	<request-map uri="CreateInventoryTransfer">
+		<security https="true" auth="true" />
+		<event type="service" path="" invoke="createInventoryTransfer" />
+		<response name="success" type="view" value="FindFacilityTransfers" />
+		<response name="error" type="view" value="FindFacilityTransfers" />
+	</request-map>
+	<request-map uri="UpdateInventoryTransfer">
+		<security https="true" auth="true" />
+		<event type="service" path="" invoke="updateInventoryTransfer" />
+		<response name="success" type="view" value="FindFacilityTransfers" />
+		<response name="error" type="view" value="FindFacilityTransfers" />
+	</request-map>
+	<request-map uri="CompleteRequestedTransfers">
+		<security https="true" auth="true" />
+		<event type="service-multi" path="" invoke="updateInventoryTransfer" />
+		<response name="success" type="view" value="FindFacilityTransfers" />
+		<response name="error" type="view" value="FindFacilityTransfers" />
+	</request-map>
+
+	<!-- ================ Inventory Receive Requests ================= -->
+	<request-map uri="ReceiveInventory">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="ReceiveInventory" />
+	</request-map>
+	<request-map uri="receiveInventoryProduct">
+		<security https="true" auth="true" />
+		<event type="service-multi" path="" invoke="receiveInventoryProduct" />
+		<response name="success" type="request" value="checkForceShipmentReceived" />
+		<response name="error" type="view" value="ReceiveInventory" />
+	</request-map>
+	<request-map uri="checkForceShipmentReceived">
+		<security https="true" auth="true" />
+		<event type="java" path="org.apache.ofbiz.shipment.shipment.ShipmentEvents"
+			invoke="checkForceShipmentReceived" />
+		<response name="success" type="view" value="ReceiveInventory" />
+		<response name="error" type="view" value="ReceiveInventory" />
+	</request-map>
+	<request-map uri="receiveSingleInventoryProduct">
+		<security https="true" auth="true" />
+		<event type="service" path="" invoke="receiveInventoryProduct" />
+		<response name="success" type="request" value="EditInventoryItem" />
+		<response name="error" type="view" value="ReceiveInventory" />
+	</request-map>
+	<request-map uri="ReceiveReturn">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="ReceiveReturn" />
+	</request-map>
+	<request-map uri="receiveReturnedProduct">
+		<security https="true" auth="true" />
+		<event type="service-multi" path="" invoke="receiveInventoryProduct" />
+		<response name="success" type="view" value="ReceiveReturn" />
+		<response name="error" type="view" value="ReceiveReturn" />
+	</request-map>
+	<request-map uri="UpdatedInventoryItemStatus">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="UpdatedInventoryItemStatus" />
+	</request-map>
+
+
+
+	<!-- View Mappings -->
+	<view-map name="main" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#main" />
+	<view-map name="FindFacility" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#FindFacility" />
+	<view-map name="EditFacility" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#EditFacility" />
+	<view-map name="EditFacilityInventoryItems" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#EditFacilityInventoryItems" />
+	<view-map name="ViewFacilityInventoryByProduct" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#ViewFacilityInventoryByProduct" />
+	<view-map name="ViewFacilityInventoryItemsDetails" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#ViewFacilityInventoryItemsDetails" />
+	<view-map name="ReceiveInventory" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#ReceiveInventory" />
+	<view-map name="FindFacilityTransfers" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#FindFacilityTransfers" />
 </site-conf>
