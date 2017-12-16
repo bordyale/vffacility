@@ -13,6 +13,14 @@
 				<decorator-screen name="main-decorator"
 					location="${parameters.mainDecoratorLocation}">
 					<decorator-section name="body">
+						<section>
+							<widgets>
+								<container style="button-bar">
+									<link target="EditFacility" text="${uiLabelMap.ProductCreateNewFacility}"
+										style="buttontext" />
+								</container>
+							</widgets>
+						</section>
 					</decorator-section>
 				</decorator-screen>
 			</widgets>
@@ -61,14 +69,10 @@
 														${facility.facilityName} [${facilityId}]
 													</label>
 												</container>
-												<!-- <container style="button-bar button-style-1">
-													<link target="/workeffort/control/calendar" text="${uiLabelMap.CommonViewCalendar}"
-														url-mode="inter-app">
-														<parameter param-name="facilityId" />
-														<parameter param-name="externalLoginKey"
-															from-field="parameters.externalLoginKey" />
-													</link>
-												</container> -->
+												<!-- <container style="button-bar button-style-1"> <link target="/workeffort/control/calendar" 
+													text="${uiLabelMap.CommonViewCalendar}" url-mode="inter-app"> <parameter 
+													param-name="facilityId" /> <parameter param-name="externalLoginKey" from-field="parameters.externalLoginKey" 
+													/> </link> </container> -->
 												<platform-specific>
 													<html>
 														<html-template
@@ -147,14 +151,9 @@
 										<include-menu name="FacilityTabBar"
 											location="component://vffacility/widget/VffacilityMenus.xml" />
 
-										<section>
-											<widgets>
-												<container style="button-bar">
-													<link target="EditFacility" text="${uiLabelMap.ProductCreateNewFacility}"
-														style="buttontext" />
-												</container>
-											</widgets>
-										</section>
+										<!-- <section> <widgets> <container style="button-bar"> <link target="EditFacility" 
+											text="${uiLabelMap.ProductCreateNewFacility}" style="buttontext" /> </container> 
+											</widgets> </section> -->
 										<section>
 											<condition>
 												<if-service-permission service-name="facilityGenericPermission"
@@ -248,6 +247,8 @@
 	<screen name="EditFacilityInventoryItems">
 		<section>
 			<actions>
+				<set field="headerItem" value="facility" />
+
 				<set field="tabButtonItem" value="EditFacilityInventoryItems" />
 				<property-to-field resource="widget"
 					property="widget.form.defaultViewSize" field="viewSizeDefaultValue" />
@@ -295,6 +296,7 @@
 	<screen name="ViewFacilityInventoryByProduct">
 		<section>
 			<actions>
+				<set field="headerItem" value="facility" />
 				<set field="tabButtonItem" value="ViewFacilityInventoryByProduct" />
 				<set field="viewSize" from-field="parameters.VIEW_SIZE_1" type="Integer"
 					default-value="20" />
@@ -323,8 +325,8 @@
 				<decorator-screen name="VffacilityCommonDecorator"
 					location="${parameters.mainDecoratorLocation}">
 					<decorator-section name="body">
-						<!-- <include-menu name="ViewFacilityInventoryByProductTabBar"
-							location="component://product/widget/facility/FacilityMenus.xml" /> -->
+						<!-- <include-menu name="ViewFacilityInventoryByProductTabBar" location="component://product/widget/facility/FacilityMenus.xml" 
+							/> -->
 						<decorator-screen name="FindScreenDecorator"
 							location="component://common/widget/CommonScreens.xml">
 							<decorator-section name="search-options">
@@ -422,6 +424,7 @@
 	<screen name="ReceiveInventory">
 		<section>
 			<actions>
+				<set field="headerItem" value="facility" />
 				<set field="tabButtonItem" value="ReceiveInventory" />
 				<script
 					location="component://product/groovyScripts/facility/inventory/ReceiveInventory.groovy" />
@@ -450,6 +453,7 @@
 	<screen name="FindFacilityTransfers">
 		<section>
 			<actions>
+				<set field="headerItem" value="facility" />
 				<set field="titleProperty" value="PageTitleFindFacilityTransfers" />
 				<set field="tabButtonItem" value="FindFacilityTransfers" />
 				<set field="facilityId" from-field="parameters.facilityId" />

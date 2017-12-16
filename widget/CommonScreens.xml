@@ -61,11 +61,11 @@
                         </section>
                     </decorator-section>
                     <decorator-section name="body">
-                    	<section>
+                    	<!-- <section>
                             <widgets>
                                 <container style="button-bar"><link target="EditFacility" text="${uiLabelMap.ProductCreateNewFacility}" style="buttontext"/></container>
                             </widgets>
-                        </section>
+                        </section> -->
                         <section>
                             <condition>
                                 <if-has-permission permission="VFFACILITY" action="_VIEW"/>
