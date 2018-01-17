@@ -316,7 +316,7 @@
 				<set field="productId" from-field="parameters.productId" />
 				<set field="statusId" from-field="parameters.statusId" />
 				<script
-					location="component://product/groovyScripts/facility/facility/ViewFacilityInventoryByProduct.groovy" />
+					location="component://vffacility/groovyScripts/ViewFacilityInventoryByProduct.groovy" />
 				<entity-one entity-name="Facility" value-field="facility" />
 				<!-- <property-map resource="ProductUiLabels" map-name="uiLabelMap"/> -->
 				<set field="title" value="${uiLabelMap.PageTitleFindFacilityInventoryItems}" />
