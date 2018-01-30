@@ -43,6 +43,12 @@
 		<response name="success" type="view"
 			value="ViewFacilityInventoryItemsDetails" />
 	</request-map>
+	<request-map uri="UpdateFacility">
+		<security https="true" auth="true" />
+		<event type="service" path="" invoke="updateFacility" />
+		<response name="success" type="view" value="EditFacility" />
+		<response name="error" type="view" value="EditFacility" />
+	</request-map>
 
 	<!-- ================ Inventory Receive Requests ================= -->
 	<request-map uri="ReceiveInventory">
@@ -163,9 +169,16 @@
 	</request-map>
 
 
-    <!-- ================ Lookup Requests ================= -->
-	<request-map uri="LookupPurchaseOrderHeaderAndShipInfo"><security https="true" auth="true"/><response name="success" type="view" value="LookupPurchaseOrderHeaderAndShipInfo"/></request-map>
-    <request-map uri="LookupProduct"><security auth="true" https="true"/><response name="success" type="view" value="LookupProduct"/></request-map>
+	<!-- ================ Lookup Requests ================= -->
+	<request-map uri="LookupPurchaseOrderHeaderAndShipInfo">
+		<security https="true" auth="true" />
+		<response name="success" type="view"
+			value="LookupPurchaseOrderHeaderAndShipInfo" />
+	</request-map>
+	<request-map uri="LookupProduct">
+		<security auth="true" https="true" />
+		<response name="success" type="view" value="LookupProduct" />
+	</request-map>
 
 	<!-- View Mappings -->
 	<view-map name="main" type="screen"
@@ -186,6 +199,11 @@
 		page="component://vffacility/widget/VffacilityScreens.xml#FindFacilityTransfers" />
 	<view-map name="EditInventoryItem" type="screen"
 		page="component://vffacility/widget/VffacilityScreens.xml#EditInventoryItem" />
-		<view-map name="LookupProduct" page="component://product/widget/catalog/LookupScreens.xml#LookupProduct" type="screen"/>
-		<view-map name="LookupPurchaseOrderHeaderAndShipInfo" type="screen" page="component://order/widget/ordermgr/LookupScreens.xml#LookupPurchaseOrderHeaderAndShipInfo"/>
+	<view-map name="LookupProduct"
+		page="component://product/widget/catalog/LookupScreens.xml#LookupProduct"
+		type="screen" />
+	<view-map name="LookupPurchaseOrderHeaderAndShipInfo" type="screen"
+		page="component://order/widget/ordermgr/LookupScreens.xml#LookupPurchaseOrderHeaderAndShipInfo" />
+	<view-map name="TransferInventoryItem" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#TransferInventoryItem" />
 </site-conf>
