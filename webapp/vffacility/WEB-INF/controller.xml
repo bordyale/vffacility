@@ -51,6 +51,10 @@
 	</request-map>
 
 	<!-- ================ Inventory Receive Requests ================= -->
+	<request-map uri="EditInventoryItem">
+        <security https="true" auth="true"/>
+        <response name="success" type="view" value="EditInventoryItem"/>
+    </request-map>
 	<request-map uri="ReceiveInventory">
 		<security https="true" auth="true" />
 		<response name="success" type="view" value="ReceiveInventory" />
