@@ -25,6 +25,12 @@
 		<security https="true" auth="true" />
 		<response name="success" type="view" value="FindFacility" />
 	</request-map>
+	<request-map uri="CreateFacility">
+        <security https="true" auth="true"/>
+        <event type="service" path="" invoke="createFacility"/>
+        <response name="success" type="view" value="EditFacility"/>
+        <response name="error" type="view" value="EditFacility"/>
+    </request-map>
 	<request-map uri="EditFacility">
 		<security https="true" auth="true" />
 		<response name="success" type="view" value="EditFacility" />
