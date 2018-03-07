@@ -210,7 +210,7 @@
 	<view-map name="EditInventoryItem" type="screen"
 		page="component://vffacility/widget/VffacilityScreens.xml#EditInventoryItem" />
 	<view-map name="LookupProduct"
-		page="component://product/widget/catalog/LookupScreens.xml#LookupProduct"
+		page="component://vforder/widget/LookupScreens.xml#LookupProduct"
 		type="screen" />
 	<view-map name="LookupPurchaseOrderHeaderAndShipInfo" type="screen"
 		page="component://order/widget/ordermgr/LookupScreens.xml#LookupPurchaseOrderHeaderAndShipInfo" />
