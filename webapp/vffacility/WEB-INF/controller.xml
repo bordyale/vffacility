@@ -177,6 +177,12 @@
 		<response name="success" type="request" value="EditInventoryItem" />
 		<response name="error" type="view" value="ReceiveInventory" />
 	</request-map>
+	<request-map uri="UpdateInventoryItem">
+        <security https="true" auth="true"/>
+        <event type="service" path="" invoke="updateInventoryItem"/>
+        <response name="success" type="view" value="EditInventoryItem"/>
+        <response name="error" type="view" value="EditInventoryItem"/>
+    </request-map>
 
 
 	<!-- ================ Lookup Requests ================= -->

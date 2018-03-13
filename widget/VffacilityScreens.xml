@@ -556,8 +556,8 @@
 					</actions>
 					<widgets />
 				</section>
-				<decorator-screen name="CommonFacilityDecorator"
-					location="${parameters.commonFacilityDecoratorLocation}">
+				<decorator-screen name="VffacilityCommonDecorator"
+					location="${parameters.mainDecoratorLocation}">
 					<decorator-section name="body">
 						<section>
 							<condition>
@@ -567,7 +567,7 @@
 							</condition>
 							<widgets>
 								<include-menu name="InventoryItemTabBar"
-									location="component://product/widget/facility/FacilityMenus.xml" />
+									location="component://vffacility/widget/VffacilityMenus.xml" />
 								<container style="h1">
 									<label text="${uiLabelMap.PageTitleEditInventoryItem}" />
 								</container>
@@ -590,7 +590,7 @@
 							</fail-widgets>
 						</section>
 						<include-form name="EditInventoryItem"
-							location="component://product/widget/facility/InventoryForms.xml" />
+							location="component://vffacility/widget/VffacilityForms.xml" />
 						<section>
 							<condition>
 								<not>
