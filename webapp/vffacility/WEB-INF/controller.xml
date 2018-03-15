@@ -26,11 +26,11 @@
 		<response name="success" type="view" value="FindFacility" />
 	</request-map>
 	<request-map uri="CreateFacility">
-        <security https="true" auth="true"/>
-        <event type="service" path="" invoke="createFacility"/>
-        <response name="success" type="view" value="EditFacility"/>
-        <response name="error" type="view" value="EditFacility"/>
-    </request-map>
+		<security https="true" auth="true" />
+		<event type="service" path="" invoke="createFacility" />
+		<response name="success" type="view" value="EditFacility" />
+		<response name="error" type="view" value="EditFacility" />
+	</request-map>
 	<request-map uri="EditFacility">
 		<security https="true" auth="true" />
 		<response name="success" type="view" value="EditFacility" />
@@ -58,9 +58,9 @@
 
 	<!-- ================ Inventory Receive Requests ================= -->
 	<request-map uri="EditInventoryItem">
-        <security https="true" auth="true"/>
-        <response name="success" type="view" value="EditInventoryItem"/>
-    </request-map>
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="EditInventoryItem" />
+	</request-map>
 	<request-map uri="ReceiveInventory">
 		<security https="true" auth="true" />
 		<response name="success" type="view" value="ReceiveInventory" />
@@ -178,11 +178,15 @@
 		<response name="error" type="view" value="ReceiveInventory" />
 	</request-map>
 	<request-map uri="UpdateInventoryItem">
-        <security https="true" auth="true"/>
-        <event type="service" path="" invoke="updateInventoryItem"/>
-        <response name="success" type="view" value="EditInventoryItem"/>
-        <response name="error" type="view" value="EditInventoryItem"/>
-    </request-map>
+		<security https="true" auth="true" />
+		<event type="service" path="" invoke="updateInventoryItem" />
+		<response name="success" type="view" value="EditInventoryItem" />
+		<response name="error" type="view" value="EditInventoryItem" />
+	</request-map>
+	<request-map uri="ViewInventoryItemDetail">
+		<security https="true" auth="true" />
+		<response name="success" type="view" value="ViewInventoryItemDetail" />
+	</request-map>
 
 
 	<!-- ================ Lookup Requests ================= -->
@@ -222,4 +226,6 @@
 		page="component://order/widget/ordermgr/LookupScreens.xml#LookupPurchaseOrderHeaderAndShipInfo" />
 	<view-map name="TransferInventoryItem" type="screen"
 		page="component://vffacility/widget/VffacilityScreens.xml#TransferInventoryItem" />
+	<view-map name="ViewInventoryItemDetail" type="screen"
+		page="component://vffacility/widget/VffacilityScreens.xml#ViewInventoryItemDetail" />
 </site-conf>

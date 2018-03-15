@@ -15,10 +15,8 @@
 					<decorator-section name="body">
 						<section>
 							<widgets>
-								<!-- <container style="button-bar">
-									<link target="EditFacility" text="${uiLabelMap.ProductCreateNewFacility}"
-										style="buttontext" />
-								</container> -->
+								<!-- <container style="button-bar"> <link target="EditFacility" text="${uiLabelMap.ProductCreateNewFacility}" 
+									style="buttontext" /> </container> -->
 							</widgets>
 						</section>
 					</decorator-section>
@@ -521,6 +519,7 @@
 			<actions>
 				<set field="titleProperty" value="PageTitleEditInventoryItem" />
 				<set field="tabButtonItem" value="EditFacilityInventoryItems" />
+				<set field="headerItem" value="facility" />
 				<set field="subTabButtonItem" value="EditInventoryItem" />
 				<set field="displayWithNoFacility" value="Y" />
 				<set field="facilityId" from-field="parameters.facilityId" />
@@ -688,6 +687,49 @@
 								</screenlet>
 							</widgets>
 						</section>
+					</decorator-section>
+				</decorator-screen>
+			</widgets>
+		</section>
+	</screen>
+	<screen name="ViewInventoryItemDetail">
+		<section>
+			<actions>
+				<property-map resource="WorkEffortUiLabels" map-name="uiLabelMap"
+					global="true" />
+				<set field="titleProperty" value="PageTitleEditInventoryItem" />
+				<set field="headerItem" value="facility" />
+				<set field="tabButtonItem" value="EditFacilityInventoryItems" />
+				<set field="subTabButtonItem" value="ViewInventoryItemDetail" />
+
+				<set field="inventoryItemId" from-field="parameters.inventoryItemId" />
+				<set field="facilityId" from-field="parameters.facilityId" />
+
+				<entity-condition entity-name="InventoryItemDetail"
+					list="inventoryItemDetails">
+					<condition-list combine="and">
+						<condition-expr field-name="inventoryItemId"
+							operator="equals" from-field="inventoryItemId" />
+					</condition-list>
+					<order-by field-name="-inventoryItemDetailSeqId" />
+				</entity-condition>
+			</actions>
+			<widgets>
+				<decorator-screen name="VffacilityCommonDecorator"
+					location="${parameters.mainDecoratorLocation}">
+					<decorator-section name="body">
+						<include-menu name="InventoryItemTabBar"
+							location="component://product/widget/facility/FacilityMenus.xml" />
+						<screenlet
+							title="${uiLabelMap.ProductInventoryDetails} ${uiLabelMap.CommonFor} [${inventoryItemId}]">
+							<include-form name="ListInventoryItemDetail"
+								location="component://product/widget/facility/InventoryForms.xml" />
+						</screenlet>
+						<screenlet
+							title="${uiLabelMap.ProductShipmentReceiptsFor} [${inventoryItemId}]">
+							<include-form name="ViewInventoryItemShipmentReceipts"
+								location="component://product/widget/facility/InventoryForms.xml" />
+						</screenlet>
 					</decorator-section>
 				</decorator-screen>
 			</widgets>
