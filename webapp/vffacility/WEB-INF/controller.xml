@@ -187,6 +187,18 @@
 		<security https="true" auth="true" />
 		<response name="success" type="view" value="ViewInventoryItemDetail" />
 	</request-map>
+	<request-map uri="CreateInventoryItem">
+        <security https="true" auth="true"/>
+        <event type="service" path="" invoke="createInventoryItem"/>
+        <response name="success" type="view" value="EditInventoryItem"/>
+        <response name="error" type="view" value="EditInventoryItem"/>
+    </request-map>
+    <request-map uri="createPhysicalInventoryAndVariance">
+        <security https="true" auth="true"/>
+        <event type="service" path="" invoke="createPhysicalInventoryAndVariance"/>
+        <response name="success" type="view" value="EditInventoryItem"/>
+        <response name="error" type="view" value="EditInventoryItem"/>
+    </request-map>
 
 
 	<!-- ================ Lookup Requests ================= -->

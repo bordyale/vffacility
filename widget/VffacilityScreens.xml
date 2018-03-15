@@ -269,11 +269,11 @@
 										style="buttontext create">
 										<parameter param-name="facilityId" from-field="parameters.facilityId" />
 									</link>
-									<link target="SearchInventoryItemsByLabels"
+									<!-- <link target="SearchInventoryItemsByLabels"
 										text="${uiLabelMap.ProductSearchInventoryItemsByLabels}"
 										style="buttontext search">
 										<parameter param-name="facilityId" from-field="parameters.facilityId" />
-									</link>
+									</link> -->
 								</container>
 							</decorator-section>
 							<decorator-section name="search-options">
@@ -701,7 +701,7 @@
 				<set field="headerItem" value="facility" />
 				<set field="tabButtonItem" value="EditFacilityInventoryItems" />
 				<set field="subTabButtonItem" value="ViewInventoryItemDetail" />
-
+				<set field="displayWithNoFacility" value="Y" />
 				<set field="inventoryItemId" from-field="parameters.inventoryItemId" />
 				<set field="facilityId" from-field="parameters.facilityId" />
 
@@ -719,16 +719,16 @@
 					location="${parameters.mainDecoratorLocation}">
 					<decorator-section name="body">
 						<include-menu name="InventoryItemTabBar"
-							location="component://product/widget/facility/FacilityMenus.xml" />
+							location="component://vffacility/widget/VffacilityMenus.xml" />
 						<screenlet
 							title="${uiLabelMap.ProductInventoryDetails} ${uiLabelMap.CommonFor} [${inventoryItemId}]">
 							<include-form name="ListInventoryItemDetail"
-								location="component://product/widget/facility/InventoryForms.xml" />
+								location="component://vffacility/widget/VffacilityForms.xml" />
 						</screenlet>
 						<screenlet
 							title="${uiLabelMap.ProductShipmentReceiptsFor} [${inventoryItemId}]">
 							<include-form name="ViewInventoryItemShipmentReceipts"
-								location="component://product/widget/facility/InventoryForms.xml" />
+								location="component://vffacility/widget/VffacilityForms.xml" />
 						</screenlet>
 					</decorator-section>
 				</decorator-screen>

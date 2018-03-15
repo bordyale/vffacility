@@ -46,7 +46,7 @@
                                         <include-menu name="FacilityTabBar" location="component://vffacility/widget/VffacilityMenus.xml"/>
                                     </widgets>
                                     <fail-widgets>
-                                        <label style="h3">${uiLabelMap.ProductErrorFacilityIdNotFound}</label>
+                                        <label style="h3">${uiLabelMap.ProductErrorFacilityIdNoFound}</label>
                                     </fail-widgets>
                                 </section>
                                 <section>
