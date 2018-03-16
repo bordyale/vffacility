@@ -62,4 +62,16 @@
         <value xml:lang="en">Facility Type</value>
         <value xml:lang="hu">Raktar Típus</value>
     </property>
+    <property key="ProductEditFacility">
+        <value xml:lang="en">Edit Facility</value>
+        <value xml:lang="hu">Raktár szerkesztés</value>
+    </property>
+    <property key="ProductFacilityDefaultWeightUnit">
+        <value xml:lang="en">Default Weight Unit</value>
+        <value xml:lang="hu">Súly Egység</value>
+    </property>
+    <property key="ProductName">
+        <value xml:lang="en">Name</value>
+        <value xml:lang="hu">Név</value>
+    </property>
 </resource>

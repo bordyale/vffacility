@@ -428,7 +428,7 @@
 					location="component://product/groovyScripts/facility/inventory/ReceiveInventory.groovy" />
 				<set field="facilityId" from-field="parameters.facilityId" />
 				<entity-one entity-name="Facility" value-field="facility" />
-				<property-map resource="ProductUiLabels" map-name="uiLabelMap" />
+				<property-map resource="VffacilityUiLabels" map-name="uiLabelMap" />
 				<set field="title" value="${uiLabelMap.ProductReceiveInventory}" />
 				<set field="layoutSettings.javaScripts[+0]" value="/ordermgr-js/ConvertUom.js"
 					global="true" />
