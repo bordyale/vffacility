@@ -265,11 +265,11 @@
 							location="component://common/widget/CommonScreens.xml">
 							<decorator-section name="menu-bar">
 								<container style="button-bar">
-									<link target="EditInventoryItem" text="${uiLabelMap.ProductNewInventoryItem}"
+									<!-- <link target="EditInventoryItem" text="${uiLabelMap.ProductNewInventoryItem}"
 										style="buttontext create">
 										<parameter param-name="facilityId" from-field="parameters.facilityId" />
 									</link>
-									<!-- <link target="SearchInventoryItemsByLabels"
+									<link target="SearchInventoryItemsByLabels"
 										text="${uiLabelMap.ProductSearchInventoryItemsByLabels}"
 										style="buttontext search">
 										<parameter param-name="facilityId" from-field="parameters.facilityId" />
@@ -278,11 +278,11 @@
 							</decorator-section>
 							<decorator-section name="search-options">
 								<include-form name="SearchInventoryItemsParams"
-									location="component://product/widget/facility/FacilityForms.xml" />
+									location="component://vffacility/widget/VffacilityForms.xml" />
 							</decorator-section>
 							<decorator-section name="search-results">
 								<include-form name="ListFacilityInventoryItems"
-									location="component://product/widget/facility/FacilityForms.xml" />
+									location="component://vffacility/widget/VffacilityForms.xml" />
 							</decorator-section>
 						</decorator-screen>
 					</decorator-section>

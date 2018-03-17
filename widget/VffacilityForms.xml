@@ -47,7 +47,7 @@
 			entity-name="StatusItem" key-field-name="statusId"> <entity-constraint name="statusTypeId" 
 			operator="equals" value="INV_SERIALIZED_STTS" /> </entity-options> </drop-down> 
 			</field> -->
-		<field name="offsetQOHQty" title="${uiLabelMap.ProductQtyOffsetQOHBelow}">
+		<!-- <field name="offsetQOHQty" title="${uiLabelMap.ProductQtyOffsetQOHBelow}">
 			<text />
 		</field>
 		<field name="offsetATPQty" title="${uiLabelMap.ProductQtyOffsetATPBelow}">
@@ -60,7 +60,7 @@
 		<field name="VIEW_SIZE_1" entry-name="viewSize"
 			title="${uiLabelMap.ProductShowProductsPerPage}">
 			<text />
-		</field>
+		</field> 
 		<field name="monthsInPastLimit" entry-name="monthsInPastLimit">
 			<text />
 		</field>
@@ -69,7 +69,7 @@
 		</field>
 		<field name="thruDateSellThrough" title="${uiLabelMap.ProductThruDateSellThrough}">
 			<date-time />
-		</field>
+		</field>-->
 		<field name="submitButton" title="${uiLabelMap.CommonFind}"
 			widget-style="smallSubmit">
 			<submit button-type="button" />
@@ -165,10 +165,9 @@
 		</field>
 		<field name="productId" required-field="true" position="1">
 			<lookup target-form-name="LookupProduct">
-				<!-- <sub-hyperlink target="/vfproduct/control/EditProduct"
-					target-type="inter-app" description="${uiLabelMap.ProductEditProduct} [${productId}]">
-					<parameter param-name="productId" />
-				</sub-hyperlink> -->
+				<!-- <sub-hyperlink target="/vfproduct/control/EditProduct" target-type="inter-app" 
+					description="${uiLabelMap.ProductEditProduct} [${productId}]"> <parameter 
+					param-name="productId" /> </sub-hyperlink> -->
 			</lookup>
 		</field>
 		<field name="statusId" use-when="inventoryItem==null">
@@ -323,6 +322,143 @@
 		<field name="inventoryItemId">
 			<hidden />
 		</field>
+	</form>
+	<form name="SearchInventoryItemsParams" type="single"
+		target="EditFacilityInventoryItems" header-row-style="header-row"
+		default-table-style="basic-table">
+		<field name="facilityId">
+			<drop-down allow-empty="false">
+				<entity-options entity-name="Facility"
+					key-field-name="facilityId" description="${facilityName} [${facilityId}]">
+					<entity-order-by field-name="facilityName" />
+				</entity-options>
+			</drop-down>
+		</field>
+		<field name="datetimeReceived">
+			<date-find />
+		</field>
+		<field name="productId">
+			<text-find />
+		</field>
+		<field name="internalName">
+			<text-find />
+		</field>
+		<field name="inventoryItemId">
+			<text-find />
+		</field>
+		<!-- <field name="statusId">
+			<check all-checked="false">
+				<entity-options entity-name="StatusItem"
+					key-field-name="statusId">
+					<entity-constraint name="statusTypeId" operator="equals"
+						value="INV_NON_SER_STTS" />
+				</entity-options>
+				<entity-options entity-name="StatusItem"
+					key-field-name="statusId">
+					<entity-constraint name="statusTypeId" operator="equals"
+						value="INV_SERIALIZED_STTS" />
+				</entity-options>
+			</check>
+		</field>
+		<field name="serialNumber">
+			<text-find />
+		</field>
+		<field name="softIdentifier">
+			<text />
+		</field>
+		<field name="partyId" title="${uiLabelMap.FormFieldTitle_manufacturerPartyId}">
+			<lookup target-form-name="LookupPartyName" />
+		</field>
+		<field name="lotId" title="${uiLabelMap.ProductLotId}">
+			<text />
+		</field> -->
+		<!-- the content of the softIdentifier field is converted from hex to int 
+			if it starts with "0x"; this is a nice example of using JavaScript in a form 
+			widget definition -->
+		<field name="submitButton" title="${uiLabelMap.CommonFind}"
+			event="onclick"
+			action="javascript:var field=document.SearchInventoryItemsParams.softIdentifier;var tmp=field.value;if (tmp.substring(0, 2) == '0x') {tmp=parseInt(tmp, 16)};if (!isNaN(tmp)) {field.value=tmp};return true;">
+			<submit button-type="button" />
+		</field>
+	</form>
+	<form name="ListFacilityInventoryItems" type="list" list-name="listIt"
+		header-row-style="header-row-2" paginate-target="EditFacilityInventoryItems"
+		odd-row-style="alternate-row" default-table-style="basic-table hover-bar">
+		<actions>
+			<service service-name="performFind" result-map="results"
+				result-map-list="listIt">
+				<field-map field-name="inputFields" from-field="parameters" />
+				<field-map field-name="entityName" value="InventoryItemAndLocation" />
+				<field-map field-name="orderBy"
+					value="statusId|quantityOnHandTotal|serialNumber" />
+				<field-map field-name="viewIndex" from-field="viewIndex" />
+				<field-map field-name="viewSize" from-field="viewSize" />
+			</service>
+		</actions>
+		<field name="inventoryItemId" widget-style="buttontext">
+			<hyperlink description="${inventoryItemId}" target="EditInventoryItem">
+				<parameter param-name="inventoryItemId" />
+				<parameter param-name="facilityId" />
+			</hyperlink>
+		</field>
+		<!-- <field name="inventoryItemTypeId" title="${uiLabelMap.ProductInventoryItemTypeId}">
+			<display-entity entity-name="InventoryItemType" />
+		</field> -->
+		<!-- <field name="statusId">
+			<display-entity entity-name="StatusItem" />
+		</field> -->
+		<field name="datetimeReceived">
+			<display />
+		</field>
+		<!-- <field name="expireDate" title="${uiLabelMap.ProductExpireDate}">
+			<display />
+		</field> -->
+		<field name="productId">
+			<hyperlink description="${productId}" target="/catalog/control/EditProduct"
+				target-type="inter-app">
+				<parameter param-name="productId" />
+			</hyperlink>
+		</field>
+		<field name="internalName">
+			<display />
+		</field>
+		<!-- <field name="partyId">
+			<display />
+		</field>
+		<field name="locationSeqId" widget-style="buttontext">
+			<hyperlink
+				description="${areaId}:${aisleId}:${sectionId}:${levelId}:${positionId} [${locationSeqId}]"
+				target="EditFacilityLocation">
+				<parameter param-name="facilityId" />
+				<parameter param-name="locationSeqId" />
+			</hyperlink>
+		</field>
+		<field name="enumId" entry-name="locationTypeEnumId" title="${uiLabelMap.CommonType}">
+			<display-entity entity-name="Enumeration" />
+		</field>
+		<field name="lotId" title="${uiLabelMap.ProductLotId}">
+			<display />
+		</field>
+		<field name="binNumber" title="${uiLabelMap.ProductBinNumber}">
+			<display />
+		</field>
+		<field name="serialNumber">
+			<display />
+		</field>
+		<field name="softIdentifier">
+			<display />
+		</field> -->
+		<field name="quantityOnHandTotal">
+			<display description="${availableToPromiseTotal} / ${quantityOnHandTotal}" />
+		</field>
+		<!-- <field name="transfer" title="${uiLabelMap.ProductTransfer}"
+			entry-name="inventoryItemId" widget-style="buttontext">
+			<hyperlink description="${uiLabelMap.ProductTransfer}"
+				target="TransferInventoryItem">
+				<parameter param-name="facilityId" />
+				<parameter param-name="inventoryItemId" />
+			</hyperlink>
+		</field> -->
 	</form>
 
 </forms>

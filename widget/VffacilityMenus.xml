@@ -51,11 +51,11 @@
 		<!-- <menu-item name="PhysicalInventory" title="${uiLabelMap.ProductPhysicalInventory}"> 
 			<link target="FindFacilityPhysicalInventory"> <parameter param-name="facilityId"/> 
 			</link> </menu-item> -->
-		<menu-item name="FindFacilityTransfers" title="${uiLabelMap.ProductInventoryXfers}">
+		<!-- <menu-item name="FindFacilityTransfers" title="${uiLabelMap.ProductInventoryXfers}">
 			<link target="FindFacilityTransfers">
 				<parameter param-name="facilityId" />
 			</link>
-		</menu-item>
+		</menu-item> -->
 		<!-- <menu-item name="ReceiveReturn" title="${uiLabelMap.ProductReceiveReturn}"> 
 			<link target="ReceiveReturn"> <parameter param-name="facilityId"/> </link> 
 			</menu-item> <menu-item name="PicklistOptions" title="${uiLabelMap.ProductPicking}"> 

@@ -74,4 +74,36 @@
         <value xml:lang="en">Name</value>
         <value xml:lang="hu">Név</value>
     </property>
+    <property key="ProductInternalName">
+        <value xml:lang="en">Internal Name</value>
+        <value xml:lang="hu">Belső Név</value>
+    </property>
+    <property key="ProductProductType">
+        <value xml:lang="en">Product Type</value>
+        <value xml:lang="hu">Termék Typus</value>
+    </property>
+    <property key="ProductSupplier">
+        <value xml:lang="en">Supplier</value>
+        <value xml:lang="hu">Szállító</value>
+    </property>
+    <property key="ProductReceiveInventory">
+        <value xml:lang="en">Receive Inventory</value>
+        <value xml:lang="hu">Termék Befogadás</value>
+    </property>
+    <property key="ProductReceiveItem">
+        <value xml:lang="en">Receive Item</value>
+        <value xml:lang="hu">Termék Befogadás</value>
+    </property>
+    <property key="ProductPurchaseOrderNumber">
+        <value xml:lang="en">Order Id</value>
+        <value xml:lang="hu">Rendelés Azonosító</value>
+    </property>
+    <property key="ProductProductId">
+        <value xml:lang="en">Product Id</value>
+        <value xml:lang="hu">Termék Azonosító</value>
+    </property>
+    <property key="ProductReceiveProduct">
+        <value xml:lang="en">Receive Product</value>
+        <value xml:lang="hu">Befogadás</value>
+    </property>
 </resource>
