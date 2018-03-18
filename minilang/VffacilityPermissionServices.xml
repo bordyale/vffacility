@@ -1,43 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-Licensed to the Apache Software Foundation (ASF) under one
-or more contributor license agreements.  See the NOTICE file
-distributed with this work for additional information
-regarding copyright ownership.  The ASF licenses this file
-to you under the Apache License, Version 2.0 (the
-"License"); you may not use this file except in compliance
-with the License.  You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations
-under the License.
--->
+<!-- Licensed to the Apache Software Foundation (ASF) under one or more contributor 
+	license agreements. See the NOTICE file distributed with this work for additional 
+	information regarding copyright ownership. The ASF licenses this file to 
+	you under the Apache License, Version 2.0 (the "License"); you may not use 
+	this file except in compliance with the License. You may obtain a copy of 
+	the License at http://www.apache.org/licenses/LICENSE-2.0 Unless required 
+	by applicable law or agreed to in writing, software distributed under the 
+	License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS 
+	OF ANY KIND, either express or implied. See the License for the specific 
+	language governing permissions and limitations under the License. -->
 
 <simple-methods xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://ofbiz.apache.org/Simple-Method" xsi:schemaLocation="http://ofbiz.apache.org/Simple-Method http://ofbiz.apache.org/dtds/simple-methods.xsd">
+	xmlns="http://ofbiz.apache.org/Simple-Method"
+	xsi:schemaLocation="http://ofbiz.apache.org/Simple-Method http://ofbiz.apache.org/dtds/simple-methods.xsd">
 
-    <simple-method method-name="vffacilityGenericPermission" short-description="Main permission logic">
-        <set field="mainAction" from-field="parameters.mainAction"/>
-        <if-empty field="mainAction">
-            <add-error>
-                <fail-property resource="VffacilityUiLabels" property="VffacilityPermissionMainActionAttributeMissing"/>
-            </add-error>
-            <check-errors/>
-        </if-empty>
-        <if-has-permission permission="VFFACILITY" action="_${parameters.mainAction}">
-            <set field="hasPermission" type="Boolean" value="true"/>
-            <field-to-result field="hasPermission"/>
-            <else>
-                <property-to-field resource="VffacilityUiLabels" property="VffacilityPermissionError" field="failMessage"/>
-                <set field="hasPermission" type="Boolean" value="false"/>
-                <field-to-result field="hasPermission"/>
-                <field-to-result field="failMessage"/>
-            </else>
-        </if-has-permission>
-    </simple-method>
+	<simple-method method-name="vffacilityGenericPermission"
+		short-description="Main permission logic">
+		<set field="mainAction" from-field="parameters.mainAction" />
+		<if-empty field="mainAction">
+			<add-error>
+				<fail-property resource="VffacilityUiLabels"
+					property="VffacilityPermissionMainActionAttributeMissing" />
+			</add-error>
+			<check-errors />
+		</if-empty>
+		<if-has-permission permission="VFFACILITY"
+			action="_${parameters.mainAction}">
+			<set field="hasPermission" type="Boolean" value="true" />
+			<field-to-result field="hasPermission" />
+			<else>
+				<property-to-field resource="VffacilityUiLabels"
+					property="VffacilityPermissionError" field="failMessage" />
+				<set field="hasPermission" type="Boolean" value="false" />
+				<field-to-result field="hasPermission" />
+				<field-to-result field="failMessage" />
+			</else>
+		</if-has-permission>
+	</simple-method>
+
+	<simple-method method-name="vfcreateInventoryItemDetailItem"
+		short-description="Create an InventoryItem DetailItem">
+
+		<clear-field field="createInvItemInMap" />
+		<clear-field field="createInvItemOutMap" />
+		<set field="createInvItemInMap.productId" from-field="parameters.productId" />
+		<set field="createInvItemInMap.facilityId" from-field="parameters.facilityId" />
+		<set field="createInvItemInMap.inventoryItemTypeId" value="NON_SERIAL_INV_ITEM" />
+		<call-service service-name="createInventoryItem"
+			in-map-name="createInvItemInMap">
+			<result-to-field result-name="inventoryItemId"
+				field="createInvItemOutMap.inventoryItemId" />
+		</call-service>
+		<field-to-result field="createInvItemOutMap.inventoryItemId"
+			result-name="inventoryItemId" />
+
+		<clear-field field="createDetailMap" />
+		<set field="createDetailMap.inventoryItemId" from-field="createInvItemOutMap.inventoryItemId" />
+		<set field="createDetailMap.workEffortId" from-field="parameters.workEffortId" />
+		<calculate field="createDetailMap.availableToPromiseDiff">
+			<calcop operator="negative" field="parameters.quantityNotIssued" />
+		</calculate>
+		<calculate field="createDetailMap.quantityOnHandDiff">
+			<calcop operator="negative" field="parameters.quantityNotIssued" />
+		</calculate>
+		<set field="createDetailMap.reasonEnumId" from-field="parameters.reasonEnumId" />
+		<set field="createDetailMap.description" from-field="parameters.description" />
+		<call-service service-name="createInventoryItemDetail"
+			in-map-name="createDetailMap">
+			<result-to-field result-name="inventoryItemDetailSeqId"
+				field="inventoryItemDetailSeqId" />
+		</call-service>
+		<clear-field field="createDetailMap" />
+
+		<field-to-result field="inventoryItemDetailSeqId"
+			result-name="inventoryItemDetailSeqId" />
+
+
+
+	</simple-method>
+
 </simple-methods>

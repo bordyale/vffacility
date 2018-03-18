@@ -19,4 +19,20 @@
         <implements service="permissionInterface"/>
     </service>
     
+    <service name="vfcreateInventoryItemDetailItem" default-entity-name="InventoryItemAndDetail" engine="simple"
+                location="component://vffacility/minilang/VffacilityPermissionServices.xml" invoke="vfcreateInventoryItemDetailItem" auth="true">
+        <description>Create an InventoryItem Detail Item</description>
+        <permission-service service-name="vffacilityGenericPermission" main-action="CREATE"/>
+        <auto-attributes include="pk" mode="OUT" optional="false"/>
+        <auto-attributes include="nonpk" mode="IN" optional="true">
+            <exclude field-name="availableToPromiseTotal"/>
+            <exclude field-name="quantityOnHandTotal"/>
+        </auto-attributes>
+        <attribute name="isReturned" mode="IN" type="String" default-value="N" />        
+        <override name="productId" optional="false"/>
+        <override name="facilityId" optional="false"/>
+    </service>
+    
+    
+    
 </services>
