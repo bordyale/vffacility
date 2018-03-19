@@ -50,6 +50,7 @@ import org.apache.ofbiz.entity.GenericEntityException;
 import org.apache.ofbiz.entity.GenericPK;
 import org.apache.ofbiz.entity.GenericValue;
 import org.apache.ofbiz.entity.condition.EntityCondition;
+import org.apache.ofbiz.entity.condition.EntityConditionList;
 import org.apache.ofbiz.entity.condition.EntityOperator;
 import org.apache.ofbiz.entity.util.EntityQuery;
 import org.apache.ofbiz.entity.util.EntityUtil;
@@ -85,16 +86,14 @@ public class VffacilityEvents {
 
 	public static final MathContext generalRounding = new MathContext(10);
 
-	public static String updateInventoryShipment(HttpServletRequest request,
-			HttpServletResponse response) {
+	public static String updateInventoryShipment(HttpServletRequest request, HttpServletResponse response) {
 
 		Delegator delegator = (Delegator) request.getAttribute("delegator");
-		LocalDispatcher dispatcher = (LocalDispatcher) request
-				.getAttribute("dispatcher");
-		GenericValue userLogin = (GenericValue) request.getSession()
-				.getAttribute("userLogin");
+		LocalDispatcher dispatcher = (LocalDispatcher) request.getAttribute("dispatcher");
+		GenericValue userLogin = (GenericValue) request.getSession().getAttribute("userLogin");
 		String shipmentId = null;
 		String facilityId = null;
+		String isReturnShipment = null;
 
 		// Get the parameters as a MAP, remove the productId and quantity
 		// params.
@@ -106,37 +105,64 @@ public class VffacilityEvents {
 		if (paramMap.containsKey("facilityId")) {
 			facilityId = (String) paramMap.remove("facilityId");
 		}
-
-		List<GenericValue> shipmentItems = null;
-		try {
-			shipmentItems = delegator.findByAnd("ShippingItemView",
-					UtilMisc.toMap("shipmentId", shipmentId), null, false);
-
-		} catch (GenericEntityException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+		// if isReturnShipment == Y we restore the items in the facility.
+		if (paramMap.containsKey("isReturnShipment")) {
+			isReturnShipment = (String) paramMap.remove("isReturnShipment");
 		}
-		if (shipmentItems != null) {
-			for (GenericValue si : shipmentItems) {
 
-				try {
-					BigDecimal qty = (BigDecimal) si.get("quantity");
-					Map serviceCtx = UtilMisc.toMap("productId",si.get("productId"),"facilityId", facilityId,
-							"shipmentId", shipmentId, "userLogin", userLogin,
-							"quantityOnHandDiff", qty.negate());
+		GenericValue shipment = null;
+		try {
+			shipment = delegator.findOne("Shipment", UtilMisc.toMap("shipmentId", shipmentId), false);
 
-					dispatcher.runSync("vfcreateInventoryItemDetailItem",
-							serviceCtx);
-
-				} catch (GenericServiceException e) {
-					Debug.logError(e, module);
-					return "error";
+			if ("Y".equals(isReturnShipment)) {
+				List<GenericValue> invDetails = delegator.findByAnd("InventoryItemDetail", UtilMisc.toMap("shipmentId", shipmentId), null, false);
+				if (invDetails != null) {
+					List<EntityCondition> exprs = new LinkedList<EntityCondition>();
+					for (GenericValue det : invDetails) {
+						exprs.add(EntityCondition.makeCondition("inventoryItemId", EntityOperator.EQUALS, det.get("inventoryItemId")));
+					}
+					delegator.removeByAnd("InventoryItemDetail", UtilMisc.toMap("shipmentId", shipmentId));
+					EntityConditionList<EntityCondition> ecl = EntityCondition.makeCondition(exprs, EntityOperator.OR);
+					List<GenericValue> inv = EntityQuery.use(delegator).from("InventoryItem").where(ecl).queryList();
+					delegator.removeAll(inv);
 				}
 
+				shipment.put("statusId", "SHIPMENT_CANCELLED");
+			} else {
+				List<GenericValue> shipmentItems = null;
+				try {
+					shipmentItems = delegator.findByAnd("ShippingItemView", UtilMisc.toMap("shipmentId", shipmentId), null, false);
+
+				} catch (GenericEntityException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				if (shipmentItems != null) {
+					for (GenericValue si : shipmentItems) {
+
+						try {
+							BigDecimal qty = (BigDecimal) si.get("quantity");
+							Map serviceCtx = UtilMisc.toMap("productId", si.get("productId"), "facilityId", facilityId, "shipmentId", shipmentId, "userLogin",
+									userLogin, "quantityOnHandDiff", qty.negate());
+
+							dispatcher.runSync("vfcreateInventoryItemDetailItem", serviceCtx);
+
+						} catch (GenericServiceException e) {
+							Debug.logError(e, module);
+							return "error";
+						}
+
+					}
+
+				}
+				shipment.put("statusId", "SHIPMENT_SHIPPED");
+
 			}
-
+			delegator.store(shipment);
+		} catch (GenericEntityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-
 		return "success";
 
 	}
