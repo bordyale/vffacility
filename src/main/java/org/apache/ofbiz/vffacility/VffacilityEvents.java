@@ -167,4 +167,96 @@ public class VffacilityEvents {
 
 	}
 
+	public static String updateProductionInventory(HttpServletRequest request, HttpServletResponse response) {
+
+		Delegator delegator = (Delegator) request.getAttribute("delegator");
+		LocalDispatcher dispatcher = (LocalDispatcher) request.getAttribute("dispatcher");
+		GenericValue userLogin = (GenericValue) request.getSession().getAttribute("userLogin");
+		BigDecimal quantity = BigDecimal.ZERO;
+		String facilityId = null;
+		String productId = null;
+		Map<String, Object> paramMap = UtilHttp.getParameterMap(request);
+
+		if (paramMap.containsKey("facilityId")) {
+			facilityId = (String) paramMap.remove("facilityId");
+		}
+
+		if (paramMap.containsKey("productId")) {
+			productId = (String) paramMap.remove("productId");
+		}
+		String quantityStr = null;
+		if (paramMap.containsKey("quantity")) {
+			quantityStr = (String) paramMap.remove("quantity");
+		}
+		if ((quantityStr == null) || (quantityStr.equals(""))) {
+			quantityStr = "0";
+		}
+		try {
+			quantity = new BigDecimal(quantityStr);
+		} catch (Exception e) {
+			Debug.logWarning(e, "Problems parsing quantity string: " + quantityStr, module);
+			quantity = BigDecimal.ZERO;
+		}
+
+		// product And assosiations
+		List<GenericValue> productAssoc = null;
+		try {
+			productAssoc = delegator.findByAnd("VfProductAndAssoc", UtilMisc.toMap("paProductId", productId), null, false);
+
+		} catch (GenericEntityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		String workEffortName = "Production: " + productId;
+		String workEffortId = null;
+
+		// create workeffort for production
+		try {
+			Map serviceCtx = UtilMisc.toMap("workEffortTypeId", "PROD_ORDER_TASK", "workEffortName", workEffortName, "currentStatusId", "PRUN_COMPLETED",
+					"userLogin", userLogin);
+			Map<String, Object> res = dispatcher.runSync("createWorkEffort", serviceCtx);
+			workEffortId = (String) res.get("workEffortId");
+
+		} catch (GenericServiceException e) {
+			Debug.logError(e, module);
+		}
+
+		if (productAssoc != null) {
+			for (GenericValue pa : productAssoc) {
+				// update raw material inventory
+				try {
+					BigDecimal qty = quantity.multiply((BigDecimal) pa.get("paQuantity"));
+					Map serviceCtx = UtilMisc.toMap("productId", pa.get("paProductIdTo"), "facilityId", facilityId, "workEffortId", workEffortId, "userLogin",
+							userLogin, "quantityOnHandDiff", qty.negate());
+
+					dispatcher.runSync("vfcreateInventoryItemDetailItem", serviceCtx);
+
+				} catch (GenericServiceException e) {
+					Debug.logError(e, module);
+					return "error";
+				}
+			}
+			// update finish product inventory
+			try {
+				Map serviceCtx = UtilMisc.toMap("productId", productId, "facilityId", facilityId, "workEffortId", workEffortId, "userLogin", userLogin,
+						"quantityOnHandDiff", quantity);
+
+				Map invItem = dispatcher.runSync("vfcreateInventoryItemDetailItem", serviceCtx);
+
+				// <!-- create WorkEffortInventoryAssign record -->
+				Map serviceCtx2 = UtilMisc.toMap("inventoryItemId", invItem.get("inventoryItemId"), "workEffortId", workEffortId, "userLogin", userLogin,
+						"quantity", quantity);
+
+				dispatcher.runSync("assignInventoryToWorkEffort", serviceCtx2);
+
+			} catch (GenericServiceException e) {
+				Debug.logError(e, module);
+				return "error";
+			}
+
+		}
+
+		return "success";
+
+	}
 }

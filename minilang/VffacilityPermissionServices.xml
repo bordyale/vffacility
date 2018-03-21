@@ -57,13 +57,12 @@
 		<clear-field field="createDetailMap" />
 		<set field="createDetailMap.inventoryItemId" from-field="createInvItemOutMap.inventoryItemId" />
 		<set field="createDetailMap.shipmentId" from-field="parameters.shipmentId" />
-		<!-- <calculate field="createDetailMap.availableToPromiseDiff">
-			<calcop operator="negative" field="parameters.quantityNotIssued" />
-		</calculate>
-		<calculate field="createDetailMap.quantityOnHandDiff">
-			<calcop operator="negative" field="parameters.quantityNotIssued" />
-		</calculate>
-		<set field="createDetailMap.reasonEnumId" from-field="parameters.reasonEnumId" /> -->
+		<set field="createDetailMap.workEffortId" from-field="parameters.workEffortId" />
+		<!-- <calculate field="createDetailMap.availableToPromiseDiff"> <calcop 
+			operator="negative" field="parameters.quantityNotIssued" /> </calculate> 
+			<calculate field="createDetailMap.quantityOnHandDiff"> <calcop operator="negative" 
+			field="parameters.quantityNotIssued" /> </calculate> <set field="createDetailMap.reasonEnumId" 
+			from-field="parameters.reasonEnumId" /> -->
 		<set field="createDetailMap.quantityOnHandDiff" from-field="parameters.quantityOnHandDiff" />
 		<call-service service-name="createInventoryItemDetail"
 			in-map-name="createDetailMap">
