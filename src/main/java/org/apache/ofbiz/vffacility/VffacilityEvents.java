@@ -259,4 +259,43 @@ public class VffacilityEvents {
 		return "success";
 
 	}
+
+	public static String deleteProductionInventory(HttpServletRequest request, HttpServletResponse response) {
+
+		Delegator delegator = (Delegator) request.getAttribute("delegator");
+		LocalDispatcher dispatcher = (LocalDispatcher) request.getAttribute("dispatcher");
+		GenericValue userLogin = (GenericValue) request.getSession().getAttribute("userLogin");
+		String workEffortId = null;
+		Map<String, Object> paramMap = UtilHttp.getParameterMap(request);
+
+		if (paramMap.containsKey("workEffortId")) {
+			workEffortId = (String) paramMap.remove("workEffortId");
+		}
+
+		try {
+
+			List<GenericValue> invItemDetails = delegator.findByAnd("InventoryItemDetail", UtilMisc.toMap("workEffortId", workEffortId), null, false);
+			List<EntityCondition> exprs = new LinkedList<EntityCondition>();
+			for (GenericValue det : invItemDetails) {
+				exprs.add(EntityCondition.makeCondition("inventoryItemId", EntityOperator.EQUALS, det.get("inventoryItemId")));
+			}
+			EntityConditionList<EntityCondition> ecl = EntityCondition.makeCondition(exprs, EntityOperator.OR);
+			List<GenericValue> inv = EntityQuery.use(delegator).from("InventoryItem").where(ecl).queryList();
+
+			delegator.removeByAnd("WorkEffortInventoryAssign", UtilMisc.toMap("workEffortId", workEffortId));
+			delegator.removeByAnd("InventoryItemDetail", UtilMisc.toMap("workEffortId", workEffortId));
+			delegator.removeAll(inv);
+			delegator.removeByAnd("WorkEffortKeyword", UtilMisc.toMap("workEffortId", workEffortId));
+			delegator.removeByAnd("WorkEffortStatus", UtilMisc.toMap("workEffortId", workEffortId));
+			delegator.removeByAnd("WorkEffort", UtilMisc.toMap("workEffortId", workEffortId));
+
+		} catch (GenericEntityException e) {
+			Debug.logError(e, module);
+			return "error";
+		}
+
+		return "success";
+
+	}
+
 }
